@@ -1,0 +1,14 @@
+C:\M03\crearieliminar\crearieliminar\obj\Debug\net7.0\crearieliminar.GeneratedMSBuildEditorConfig.editorconfig
+C:\M03\crearieliminar\crearieliminar\obj\Debug\net7.0\crearieliminar.AssemblyInfoInputs.cache
+C:\M03\crearieliminar\crearieliminar\obj\Debug\net7.0\crearieliminar.AssemblyInfo.cs
+C:\M03\crearieliminar\crearieliminar\obj\Debug\net7.0\crearieliminar.csproj.CoreCompileInputs.cache
+C:\M03\crearieliminar\crearieliminar\bin\Debug\net7.0\crearieliminar.exe
+C:\M03\crearieliminar\crearieliminar\bin\Debug\net7.0\crearieliminar.deps.json
+C:\M03\crearieliminar\crearieliminar\bin\Debug\net7.0\crearieliminar.runtimeconfig.json
+C:\M03\crearieliminar\crearieliminar\bin\Debug\net7.0\crearieliminar.dll
+C:\M03\crearieliminar\crearieliminar\bin\Debug\net7.0\crearieliminar.pdb
+C:\M03\crearieliminar\crearieliminar\obj\Debug\net7.0\crearieliminar.dll
+C:\M03\crearieliminar\crearieliminar\obj\Debug\net7.0\refint\crearieliminar.dll
+C:\M03\crearieliminar\crearieliminar\obj\Debug\net7.0\crearieliminar.pdb
+C:\M03\crearieliminar\crearieliminar\obj\Debug\net7.0\crearieliminar.genruntimeconfig.cache
+C:\M03\crearieliminar\crearieliminar\obj\Debug\net7.0\ref\crearieliminar.dll
