@@ -1,0 +1,5 @@
+C:\Users\joans\source\repos\AgendaMetodes\obj\Debug\net6.0\AgendaMetodes.csproj.AssemblyReference.cache
+C:\Users\joans\source\repos\AgendaMetodes\obj\Debug\net6.0\AgendaMetodes.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\joans\source\repos\AgendaMetodes\obj\Debug\net6.0\AgendaMetodes.AssemblyInfoInputs.cache
+C:\Users\joans\source\repos\AgendaMetodes\obj\Debug\net6.0\AgendaMetodes.AssemblyInfo.cs
+C:\Users\joans\source\repos\AgendaMetodes\obj\Debug\net6.0\AgendaMetodes.csproj.CoreCompileInputs.cache

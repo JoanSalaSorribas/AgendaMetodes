@@ -1,309 +1,288 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Menu_Matematic
+﻿internal class Program
 {
-    internal class Program
+    static string MenuText()
     {
-        static string MenuText()
+
+
+        string menu =
+
+            "----------Menu----------\n" +
+            "|                      |\n" +
+            "| 1.Alta usuari        |\n" +
+            "| 2.Rec. usuari        |\n" +
+            "| 3.Mod. usuari        |\n" +
+            "| 4.Eliminar usuari    |\n" +
+            "| 5.Mostrar agenda     |\n" +
+            "| 6.Ordenar agenda     |\n" +
+            "|                      |\n" +
+            "| 0.Sortir             |\n" +
+            "------------------------\n";
+        return menu;
+    }
+    static string AltaUsuari()
+    {
+
+    }
+    static void RecuperarUsuari()
+    {
+        Console.WriteLine("Introdueix el nom de l'usuari a buscar:");
+        string nomUsuari = Console.ReadLine();
+
+        // Obtenir totes les línies del fitxer agenda.txt
+        string[] línies = File.ReadAllLines("agenda.txt");
+
+        // Comprovar si l'usuari existeix i mostrar-lo
+        bool usuariTrobat = false;
+        foreach (string linia in línies)
         {
+            string[] dades = linia.Split(',');
+            string nom = dades[0].Trim();
 
-
-            string menu =
-
-                "----------Menu----------\n" +
-                "|                      |\n" +
-                "| 1.Màxim              |\n" +
-                "| 2.Mcd                |\n" +
-                "| 3.Mcm                |\n" +
-                "| 4.Factorial          |\n" +
-                "| 5.Combinatori        |\n" +
-                "| 6.MostrarDivisorMajor|\n" +
-                "| 7.EsPrimer           |\n" +
-                "| 8.NPrimersPrimers    |\n" +
-                "|                      |\n" +
-                "| 0.Sortir             |\n" +
-                "------------------------\n";
-            return menu;
-        }
-        static int Maxim()
-        {
-            int valor, major = int.MinValue;
-            Console.WriteLine("Digues un valor");
-            valor = Convert.ToInt32(Console.ReadLine());
-
-            //Bucle per a buscar el major d'una sèrie de nums
-            do
+            // Comprovem si el nom coincideix amb la entrada de l'usuari
+            if (EsCoincidencia(nom, nomUsuari))
             {
-                if (valor > major)
+                MostrarUsuari(dades);
+                usuariTrobat = true;
+                break;
+            }
+        }
+
+        // Mostrar missatge si l'usuari no s'ha trobat
+        if (!usuariTrobat)
+        {
+            Console.WriteLine("L'usuari no existeix.");
+
+            // Demanar si es vol buscar un altre usuari
+            Console.WriteLine("Vols buscar un altre usuari? (si/no)");
+            string resposta = Console.ReadLine().ToLower();
+
+            if (resposta == "si")
+            {
+                RecuperarUsuari(); // Tornar a cridar la funció per a una nova cerca
+            }
+        }
+    }
+    static void MostrarUsuari(string[] dades)
+    {
+        Console.WriteLine("Usuari trobat:");
+        Console.WriteLine($"Nom: {dades[0].Trim()}");
+        // Aquí pots afegir altres dades de l'usuari
+        Console.WriteLine("Mostrant durant 5 segons...");
+        Thread.Sleep(5000); // Esperar 5 segons
+    }
+
+    static bool EsCoincidencia(string nomFitxer, string entradaUsuari)
+    {
+        // Si l'entrada d'usuari conté l'asterisc (*) la tractarem com a comodí
+        if (entradaUsuari.Contains("*"))
+        {
+            // Verificar si el nom del fitxer coincideix amb la part de l'entrada de l'usuari abans de l'asterisc
+            return nomFitxer.StartsWith(entradaUsuari.Substring(0, entradaUsuari.IndexOf("*")));
+        }
+        else
+        {
+            // Comparar el nom del fitxer amb l'entrada de l'usuari sense comodins
+            return nomFitxer.Equals(entradaUsuari);
+        }
+    }
+    static void ModificarUsuari()
+    {
+        Console.WriteLine("----- Modificar usuari -----");
+
+        string nomUsuari;
+        Console.WriteLine("Introdueix el nom de l'usuari a modificar:");
+        nomUsuari = Console.ReadLine();
+
+        List<string[]> usuarisTroba = BuscarUsuaris(nomUsuari);
+
+        if (usuarisTroba.Count > 0)
+        {
+            Console.WriteLine("Usuaris trobats:");
+            int contador = 1;
+
+            foreach (string[] usuari in usuarisTroba)
+            {
+                Console.WriteLine($"{contador}. {usuari[0]} {usuari[1]}");
+                contador++;
+            }
+
+            Console.WriteLine("Selecciona el número de l'usuari a modificar:");
+            int opcioUsuari;
+
+            while (!int.TryParse(Console.ReadLine(), out opcioUsuari) || opcioUsuari < 1 || opcioUsuari > usuarisTroba.Count)
+            {
+                Console.WriteLine("Opció no vàlida. Torna a intentar-ho:");
+            }
+
+            // Reduir en 1 per obtenir l'índex correcte a la llista
+            opcioUsuari--;
+
+            // Obté les dades de l'usuari seleccionat
+            string[] usuariSeleccionat = usuarisTroba[opcioUsuari];
+
+            // Mostra les dades actuals de l'usuari seleccionat
+            MostrarDadesUsuari(usuariSeleccionat[0], usuariSeleccionat[1], usuariSeleccionat[2], usuariSeleccionat[3], usuariSeleccionat[4], usuariSeleccionat[5], Convert.ToInt32(usuariSeleccionat[6]));
+
+            // Bucle per a modificar dades fins que l'usuari ho decideixi
+            bool modificarMes = true;
+            while (modificarMes)
+            {
+                // Pregunta quina dada volem modificar
+                Console.WriteLine("Quina dada vols modificar? (nom/cognom/dni/telefon/dataNaix/correu)");
+                string opcioModificar = Console.ReadLine().ToLower();
+
+                switch (opcioModificar)
                 {
-                    major = valor;
-                }
-                Console.WriteLine("Torna a escriure un valor (per acabar escriu un -1)");
-                valor = Convert.ToInt32(Console.ReadLine());
-            } while (valor != -1);
-            return major;
-        }
-
-        static int Mcd()
-        {
-            int divisor1, divisor2, mcd = 0, i = 1;
-
-            Console.WriteLine("Digues un número");
-            divisor1 = Convert.ToInt32(Console.ReadLine());
-
-            Console.WriteLine("Digues un altre número");
-            divisor2 = Convert.ToInt32(Console.ReadLine());
-
-            //Bucle per a veure quin num coincideix en ser el divisor dels dos nums entrats
-            while (i <= divisor1 && i <= divisor2)
-            {
-                if (divisor1 % i == 0 && divisor2 % i == 0)
-                {
-                    mcd = i;
-                }
-                i++;
-            }
-            return mcd;
-        }
-        static int Mcm()
-        {
-            int mcm, num1, num2;
-
-            Console.WriteLine("Escriu el primer num");
-            num1 = Convert.ToInt32(Console.ReadLine());
-
-            Console.WriteLine("Escriu el segon num");
-            num2 = Convert.ToInt32(Console.ReadLine());
-
-            //comprovació de grandària
-            if (num2 > num1)
-            {
-                int aux = num1;
-                num1 = num2;
-                num2 = aux;
-            }
-
-            int i = num1;
-
-            //Bucle per a trobar el mcm
-            while (i % num1 != i % num2)
-            {
-                i++;
-            }
-            mcm = i;
-            return mcm;
-        }
-        static int Factorial()
-        {
-            int num, factorial = 1;
-            Console.WriteLine("Digues un num");
-            num = Convert.ToInt32(Console.ReadLine());
-
-            //Bucle per fer el factorial
-            for (int i = 1; i < num; i++)
-            {
-                factorial = i * factorial;
-            }
-            return factorial;
-        }
-        static double Factorial(double valor) 
-        {
-            double num = valor;
-            for (int i = 1; i < num; i++)
-            {
-                num = i * num;
-            }
-            return num;
-        }
-        static double Factorial(double valor, double valor2) 
-        {
-            
-            double res = 0;
-            for (int i = 0; i < valor; i++)
-            {
-                res = i * (valor - valor2);
-            }
-            return res;
-        }
-        static double Combinatori()
-        {
-            double operació, n, m, resta, facN, facM, facResta;
-
-            Console.WriteLine("Digues el valor de n");
-            n = Convert.ToInt32(Console.ReadLine());
-
-            Console.WriteLine("Digues el valor de m");
-            m = Convert.ToInt32(Console.ReadLine());
-
-            //Comprovar si n és més gran que m
-            if (n < m)
-            {
-                double aux = n;
-                n = m;
-                m = aux;
-            }
-            resta = n - m;
-            //Factoritzar els numeros
-            facN = Factorial(n);
-            facM = Factorial(m);
-            facResta = Factorial(n, m);
-            //fer la operació n! / (n-m)!*m!
-            operació = n / m * resta;
-            return operació;
-        }
-        static int DivisorMajor()
-        {
-            int num, divisorMajor = 0;
-            Console.WriteLine("Digues el número del que vols saber el seu divisor major");
-            num = Convert.ToInt32(Console.ReadLine());
-            for (int i = 1; i < num / 2; i++)
-            {
-                if (num % i == 0)
-                {
-                    divisorMajor = i;
-                }
-            }
-            return divisorMajor;
-        }
-
-        static void EsPrimer()
-        {
-            int primer, divisors = 0;
-
-            Console.WriteLine("Digues un número");
-            primer = Convert.ToInt32(Console.ReadLine());
-
-            // Bucle per a saber el nombre de divisors total
-            for (int i = 2; i <= primer / 2; i++)
-            {
-                if (primer % i == 0)
-                {
-                    divisors++;
-                }
-            }
-
-            // Serà primer si només té 2 divisors, és a dir, 1 i ell mateix
-            if (divisors == 0)
-            {
-                Console.WriteLine("És primer");
-            }
-            else
-            {
-                Console.WriteLine("No és primer");
-            }
-        }
-        static bool EsPrimer(int valor)
-        {
-            int num = valor;
-            bool primer = true;
-            for (int i = 2; i <= num / 2; i++)
-            {
-                if (num % i == 0)
-                {
-                    primer = false;
-                }
-            }
-            return primer;
-        }
-
-        static void NPrimersPrimers()
-        {
-            int n, primers = 0;
-            int actual = 2; // Iniciem amb el primer nombre primer
-
-            Console.WriteLine("Digues un num");
-            n = Convert.ToInt32(Console.ReadLine());
-
-            // Bucle per a repetir fins a trobar els primers n nombres primers
-            while (primers < n)
-            {
-                int divisors = 0;
-
-                // Bucle per provar si el nombre actual és primer
-                for (int i = 2; i <= actual / 2; i++)
-                {
-                    if (actual % i == 0)
-                    {
-                        divisors++;
-                    }
-                }
-
-                if (divisors == 0)
-                {
-                    Console.Write($"{actual} ");
-                    primers++;
-                }
-
-                // Passar al següent nombre
-                actual++;
-            }
-
-            Console.WriteLine(); // Nova línia després d'imprimir els primers n nombres primers
-        }
-
-        private static void Main(string[] args)
-        {
-            int opcio, num;
-            double num2;
-            string menuText = MenuText();
-            Console.WriteLine("Selecciona una de les següents opcions:\n" + menuText);
-            opcio = Convert.ToInt32(Console.ReadLine());
-
-            
-                switch (opcio)
-                {
-                    case 0:
-                        Console.WriteLine("Final del programa");
-                        break;
-
-                    case 1:
-                        num = Maxim();
-                        Console.WriteLine("El màxim és " + num);
-                        break;
-
-                    case 2:
-                        num = Mcd();
-                        Console.WriteLine("El mcd és " + num);
-                        break;
-
-                    case 3:
-                        num = Mcm();
-                        Console.WriteLine("El mcm és " + num);
-                        break;
-
-                    case 4:
-                        num = Factorial();
-                        Console.WriteLine("El factorial és " + num);
-                        break;
-
-                    case 5:
-                        num2 = Combinatori();
-                        Console.WriteLine("El resultat final és " + num2);
-                        break;
-
-                    case 6:
-                        num = DivisorMajor();
-                        Console.WriteLine("El divisor major és " + num);
-                        break;
-
-                    case 7:
-                        EsPrimer();
-                        break;
-
-                    case 8:
-                        NPrimersPrimers();
+                    case "nom":
+                    case "cognom":
+                    case "dni":
+                    case "telefon":
+                    case "dataNaix":
+                    case "correu":
+                        ModificarDadaUsuari(usuariSeleccionat, opcioModificar);
                         break;
 
                     default:
-                        Console.WriteLine("ERROR");
+                        Console.WriteLine("Opció no vàlida.");
                         break;
                 }
-            
-            
+
+                // Pregunta si vol modificar més dades
+                Console.WriteLine("Vols modificar una altra dada? (si/no)");
+                string resposta = Console.ReadLine().ToLower();
+                modificarMes = (resposta == "si");
+            }
+
+            // Mostra les dades actualitzades de l'usuari i espera 5 segons
+            Console.WriteLine("\nDades de l'usuari actualitzades. Mostrant durant 5 segons...");
+            MostrarDadesUsuari(usuariSeleccionat[0], usuariSeleccionat[1], usuariSeleccionat[2], usuariSeleccionat[3], usuariSeleccionat[4], usuariSeleccionat[5], Convert.ToInt32(usuariSeleccionat[6]));
+            Thread.Sleep(5000);
         }
+        else
+        {
+            Console.WriteLine("L'usuari no existeix.");
+        }
+    }
+
+    static void ModificarDadaUsuari(string[] usuari, string opcioModificar)
+    {
+        string novaDada;
+
+        switch (opcioModificar)
+        {
+            case "nom":
+            case "cognom":
+                Console.WriteLine($"Introdueix el nou {opcioModificar}:");
+                novaDada = Console.ReadLine();
+                ValidarNom(ref novaDada);
+                break;
+
+            case "dni":
+                Console.WriteLine("Introdueix el nou DNI:");
+                novaDada = Console.ReadLine();
+                ValidarDNI(novaDada);
+                break;
+
+            case "telefon":
+                Console.WriteLine("Introdueix el nou telèfon:");
+                novaDada = Console.ReadLine();
+                ValidarTelefon(novaDada);
+                break;
+
+            case "dataNaix":
+                Console.WriteLine("Introdueix la nova data de naixement (format: dd/MM/yyyy):");
+                novaDada = Console.ReadLine();
+                ValidarDataNaixement(novaDada, out DateTime dataNaix);
+                break;
+
+            case "correu":
+                Console.WriteLine("Introdueix el nou correu electrònic:");
+                novaDada = Console.ReadLine();
+                ValidarCorreu(novaDada);
+                break;
+
+            default:
+                novaDada = string.Empty;
+                break;
+        }
+
+        // Actualitza la dada a l'array usuari
+        switch (opcioModificar)
+        {
+            case "nom":
+                usuari[0] = novaDada;
+                break;
+
+            case "cognom":
+                usuari[1] = novaDada;
+                break;
+
+            case "dni":
+                usuari[2] = novaDada;
+                break;
+
+            case "telefon":
+                usuari[3] = novaDada;
+                break;
+
+            case "dataNaix":
+                usuari[4] = novaDada;
+                break;
+
+            case "correu":
+                usuari[5] = novaDada;
+                break;
+        }
+    }
+
+    static void OrdenarAgenda()
+    {
+        List<string> llistatUsuaris = File.ReadAllLines("agenda.txt").ToList();
+        llistatUsuaris.Sort();
+
+        using (StreamWriter sw = new StreamWriter("agenda.txt"))
+        {
+            foreach (string usuari in llistatUsuaris)
+            {
+                sw.WriteLine(usuari);
+            }
+        }
+
+        Console.WriteLine("Agenda ordenada alfabèticament.");
+    }
+    private static void Main(string[] args)
+    {
+        int opcio, num;
+        string menuText;
+
+        StreamWriter fitxer;
+        fitxer = new StreamWriter(@".\altaUsuari.txt");
+
+        Console.WriteLine("Selecciona una de les següents opcions");
+        opcio = Convert.ToInt32(Console.ReadLine());
+
+        menuText = MenuText();
+        Console.WriteLine(menuText);
+
+        while (int.TryParse(Console.ReadLine(), out opcio))
+        {
+            switch (opcio)
+            {
+                case 0:
+                    Console.WriteLine("Final del programa");
+                    return;
+
+                case 2:
+                    RecuperarUsuari();
+                    break;
+
+                default:
+                    Console.WriteLine("Opció no vàlida. Torna a intentar-ho.");
+                    break;
+            }
+
+            Console.WriteLine($"\nSelecciona una de les següents opcions:\n{menuText}");
+        }
+        fitxer.Close();
     }
 }
